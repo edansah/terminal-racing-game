@@ -2,8 +2,6 @@ from racers import *
 
 
 def sort_function():
-    print('*********************************')
-    print('*********************************')
     success = False
     while not success:
         try:
@@ -15,18 +13,19 @@ def sort_function():
                                  f': '))
         except ValueError:
             print('\n=============================')
-            print('Please enter a valid integer.')
+            print('Non-number given.')
             print('=============================\n')
 
         else:
             if sort_num not in [0, 1, 2, 3]:
-                print('\n=============================')
-                print('Please enter a valid integer.')
-                print('=============================\n')
+                print('\n=================================')
+                print('Please enter a valid sorting number.')
+                print('===================================\n')
             else:
                 print()
                 print()
                 sorted_list = return_sorted_list(sort_num)
+                print('=============================\n\n')
                 for i in sorted_list:
                     i.show_registration()
 
@@ -34,15 +33,37 @@ def sort_function():
                 success = True
 
 
-def return_car_numbers():
+def return_car_numbers() -> list:
+    car_num_list = []
+    for car in racer_objects:
+        car_num_list.append(car.car_num)
 
-    for i in range(len(racer_objects)):
-        print(racer_objects[i].power())
-
+    return car_num_list
 
 
 def pick_racer():
-    pass
+    car_numbers = return_car_numbers()
+
+    picked = False
+    while not picked:
+        try:
+            choice = int(input('Select a racer by entering their car number: '))
+        except ValueError:
+            print('\n=============================')
+            print('Please enter a valid integer.')
+            print('=============================\n')
+        else:
+            if str(choice) not in car_numbers:
+                print('\n=============================')
+                print('Please select a valid car number from the following:')
+                print(car_numbers)
+                print('=============================\n')
+            else:
+                print()
+                print('=============================')
+                print(f'You picked {racer_objects[choice].name}!')
+                print('=============================\n')
+                picked = True
 
 
 def greeting():
@@ -57,7 +78,7 @@ def greeting():
 def main():
     greeting()
     sort_function()
-    return_car_numbers()
+    pick_racer()
 
 
 # Press the green button in the gutter to run the script.
