@@ -63,5 +63,6 @@ racers_data = process_contestant_csv('contestants.csv')
 racer_objects = create_racer_objects(racers_data)
 
 
+#sorted takes an iterable and returns a list
 def return_sorted_list(sort_number: int) -> list:
     return sorted(racer_objects, key=lambda racer: racer.return_properties()[sort_number], reverse=False)
