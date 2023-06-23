@@ -29,37 +29,42 @@ def pick_racer() -> WackyRacer:
                 picked = True
 
 
-def race_function(player_choice: WackyRacer):
+def race_func(player_choice: WackyRacer):
     finished = False
-    race_length = 20
-    race_loop = 0
 
     while not finished:
+
         for racer in racer_objects:
-            while racer.distance_travelled < race_length:
-                sleep(0.5)
-                race_loop += 1
+            race_length = 50
+            race_turns = 0
 
-                for contestant in racer_objects:
-                    contestant.distance_travelled += contestant.new_speed()
-                    print(f'{contestant.name} moved {contestant.new_speed()} units.\n'
-                          f'Distance travelled: {contestant.distance_travelled} units\n'
-                          f'-----------------------------------------------------', end='')
-                    print()
-                    if contestant.distance_travelled >= race_length:
-                        if contestant == player_choice:
-                            print()
-                            print(f'You won with {contestant.name}, congratulations!\n'
-                                  f'Loops taken: {race_loop}')
-                        else:
-                            print()
-                            print(f'{contestant.name} won!\n'
-                                  f'Loops taken: {race_loop}')
+        while racer.distance_travelled < race_length:
+            sleep(0.4)
+            race_turns += 1
 
-                        finished = True
+            for racer in racer_objects:
+                racer.distance_travelled += racer.new_speed()
+                print(f'{racer.name} moved {str(racer.new_speed())} units in {racer.car_name}')
+                print(f'Distance covered so far: {racer.distance_travelled}')
+                print('-----------------------------------------------------------------')
+                if racer.distance_travelled >= race_length:
+                    if racer == player_choice:
+                        print()
+                        print()
+                        print(f'Your pick, {racer.name}, won the race!')
+                        print(f'Turns taken: {race_turns}')
+                        print()
                         break
-
-
+                    else:
+                        print()
+                        print()
+                        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                        print(f'{racer.name} won the race! Better luck next time.')
+                        print(f'Turns taken: {race_turns}')
+                        print('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                        print()
+                        break
+        finished = True
 
 
 def start_race():
@@ -70,10 +75,11 @@ def start_race():
             begin = input('Press ENTER to start the race')
             print()
             print()
+            started = True
         except ValueError:
             print()
         if begin == '':
-            race_function(choice)
+            race_func(choice)
         else:
             pass
 

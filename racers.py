@@ -42,7 +42,7 @@ class WackyRacer:
               f'No. of drivers: \t{self.passengers}\n'
               f'Power: \t\t\t\t{self.power}\n')
 
-    def new_speed(self):
+    def new_speed(self) -> int:
         return randint(1, self.speed)
 
     # Used for sorting
