@@ -1,47 +1,8 @@
 from racers import *
+from time import sleep
 
 
-def sort_function():
-    success = False
-    while not success:
-        try:
-            sort_num = int(input(f'Sort racers by: \n'
-                                 f'0: Racer name\n'
-                                 f'1: Car name\n'
-                                 f'2: Car number\n'
-                                 f'3: No. of drivers\n'
-                                 f': '))
-        except ValueError:
-            print('\n=============================')
-            print('Non-number given.')
-            print('=============================\n')
-
-        else:
-            if sort_num not in [0, 1, 2, 3]:
-                print('\n=================================')
-                print('Please enter a valid sorting number.')
-                print('===================================\n')
-            else:
-                print()
-                print()
-                sorted_list = return_sorted_list(sort_num)
-                print('=============================\n\n')
-                for i in sorted_list:
-                    i.show_registration()
-
-                print()
-                success = True
-
-
-def return_car_numbers() -> list:
-    car_num_list = []
-    for car in racer_objects:
-        car_num_list.append(car.car_num)
-
-    return car_num_list
-
-
-def pick_racer():
+def pick_racer() -> WackyRacer:
     car_numbers = return_car_numbers()
 
     picked = False
@@ -60,10 +21,61 @@ def pick_racer():
                 print('=============================\n')
             else:
                 print()
+                print()
                 print('=============================')
                 print(f'You picked {racer_objects[choice].name}!')
-                print('=============================\n')
+                print('=============================\n\n')
+                return racer_objects[choice]
                 picked = True
+
+
+def race_function(player_choice: WackyRacer):
+    finished = False
+    race_length = 20
+    race_loop = 0
+
+    while not finished:
+        for racer in racer_objects:
+            while racer.distance_travelled < race_length:
+                sleep(0.5)
+                race_loop += 1
+
+                for contestant in racer_objects:
+                    contestant.distance_travelled += contestant.new_speed()
+                    print(f'{contestant.name} moved {contestant.new_speed()} units.\n'
+                          f'Distance travelled: {contestant.distance_travelled} units\n'
+                          f'-----------------------------------------------------', end='')
+                    print()
+                    if contestant.distance_travelled >= race_length:
+                        if contestant == player_choice:
+                            print()
+                            print(f'You won with {contestant.name}, congratulations!\n'
+                                  f'Loops taken: {race_loop}')
+                        else:
+                            print()
+                            print(f'{contestant.name} won!\n'
+                                  f'Loops taken: {race_loop}')
+
+                        finished = True
+                        break
+
+
+
+
+def start_race():
+    choice = pick_racer()
+    started = False
+    while not started:
+        try:
+            begin = input('Press ENTER to start the race')
+            print()
+            print()
+        except ValueError:
+            print()
+        if begin == '':
+            race_function(choice)
+        else:
+            pass
 
 
 def greeting():
@@ -75,14 +87,10 @@ def greeting():
     print()
 
 
-def start_race():
-    finished = False
-
-
 def main():
     greeting()
     sort_function()
-    pick_racer()
+    start_race()
 
 
 # Press the green button in the gutter to run the script.
